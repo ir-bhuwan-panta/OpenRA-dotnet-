@@ -31,9 +31,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --no-restore
-      - name:
-        run: dotnet list package --include-transitive --format json
+        run: dotnet build
       # ============= InvisiRisk Cleanup =============
       - name: Cleanup PSE
         if: always()
