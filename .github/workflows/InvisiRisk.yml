@@ -1,21 +1,27 @@
 name: .NET Build xx IR
 
 on:
+  push:
+    branches: [ bleed ]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+
 jobs:
   build:
+    env:
+      IR_API_URL: "https://app.dev.invisirisk.com"
     runs-on: ubuntu-latest
     name: Run build
     steps:     
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
-          app_token: ${{secrets.IR_API_KEY}}
+          api_url: ${{env.IR_API_URL}}
+          app_token: ${{secrets.IR_API_KEY_DEV}}
       # ============= InvisiRisk Setup End =============
       - uses: actions/checkout@v2
       - name: Setup .NET
@@ -29,7 +35,7 @@ jobs:
       # ============= InvisiRisk Cleanup =============
       - name: Cleanup PSE
         if: always()
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           cleanup: "true"
       # ============= InvisiRisk Cleanup End =============
